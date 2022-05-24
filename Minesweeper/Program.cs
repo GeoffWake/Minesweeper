@@ -1,69 +1,36 @@
 ﻿using System;
 
-namespace introduction
+namespace Minesweeper
 {
     class Program
     {
         static void Main(string[] args)
         {
+            ///Create Grid
+            int[,] grid = Search.GridCreation(10, 10);
+
+            ///Second Grid
+            int[,]grid2 = Search.GridCreation(10, 10);
 
 
 
-
-           
-
-            int[,] grid =
-            {
-            { 0,0,0,0,0,0,0,0,0,0},
-            { 0,0,0,0,0,0,0,0,0,0},
-            { 0,0,0,0,0,0,0,0,0,0},
-            { 0,0,0,0,0,0,0,0,0,0},
-            { 0,0,0,0,0,0,0,0,0,0},
-            { 0,0,0,0,0,0,0,0,0,0},
-            { 0,0,0,0,0,0,0,0,0,0},
-            { 0,0,0,0,0,0,0,0,0,0},
-            { 0,0,0,0,0,0,0,0,0,0},
-            { 0,0,0,0,0,0,0,0,0,0},
-        };
-            grid[1, 5] = 5;
-           
-            ///Loop within a loop to display grid to console
-
-
-            for (int l = 0; l < 10; l++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    Console.Write(grid[l, j] + "\t");
-                }
-                Console.WriteLine("\n");
-            }
-
-
-
-
-
-
-            Random random = new Random();
+            ////Randomly Assign 10 1s to the grid that will represent the "Bombs"
+            ///
 
             int x = 0;
             int y = 0;
-
-            ///Change  ten 0s to 1s for "Bombs"
             for (int i = 0; i < 10; i++)
             {
-                x = random.Next(0, 9);
-                y = random.Next(0, 9);
+                x = Search.RandomNumberGenerator(0, 10);
+                y = Search.RandomNumberGenerator(0, 10);
 
                 grid[x, y] = 1;
+
             }
 
 
-            Console.WriteLine("Line Break");
-            Console.WriteLine("Line Break");
-            Console.WriteLine("Line Break");
-
-
+            ////Loop within a loop to display grid to console with Bomb Locations showing 
+            ///-NEEDS TO BE REMOVED FOR SUBMISSION
 
             for (int l = 0; l < 10; l++)
             {
@@ -73,106 +40,46 @@ namespace introduction
                 }
                 Console.WriteLine("\n");
             }
+            Console.WriteLine("Enter your XY co-ordinates?");
 
 
-            string[] guess = new string[90];
-
-            ///Track Bombs in surrounding squares
-            int bombTracker = 0;
-
-            
-
-
-            Console.WriteLine("Enter your xy co-ordinates?");
-
+            ///Loop through to call Mine check and Surrounds Check
+             string[] guess = new string[90];
             for (int i = 0; i < 90; i++)
             {
-                guess[i] = Console.ReadLine();
-                int k = Int32.Parse(guess[i].Substring(0, 1));///Swap around
-                int  j= Int32.Parse(guess[i].Substring(1, 1));
 
-                if (grid[j,k ] == 1)
-                {
-                    Console.WriteLine("Boom");
-                }
-                else if (grid[j, k] != 1)
-                {
-                    Console.WriteLine("Please try again");
-                }
+                    guess[i] = Console.ReadLine();
+                   int k = Int32.Parse(guess[i].Substring(0, 1));
+                   int  j= Int32.Parse(guess[i].Substring(1, 1));
 
-                ////Check surrounding squares
 
-                if (grid[j, k + 1] == 1) ///Check Row directly to the right of selected cell
-                {
-                    bombTracker++;
+                Console.WriteLine("Information displayed below will track your guesses and the amount of mines in corresponding posistions");
+                Console.WriteLine("A 2 will mean there are two mines connected with the selected cell");
+                Console.WriteLine("A 1 will mean there is one mine connected.");
+                Console.WriteLine("A 0 will mean there are no mines connected to your choice");
+                Console.WriteLine("Continue with your guess until there re no remaining squares");
 
-                } 
 
-                if (grid[j, k - 1] == 1) ///Check Row directly to the left of selected cell  ///Error when on side of grid
-                {
-                    bombTracker++;
+                Search.CheckForMine(grid, j, k);
 
-                }
-
-                if (grid[j-1, k ] == 1) ///Check Row directly above of selected cell  ///Error when on side of grid
-                {
-                    bombTracker++;
-
-                }
-                if (grid[j + 1, k] == 1) ///Check Row directly below of selected cell  ///Error when on side of grid
-                {
-                    bombTracker++;
-
-                }
-
-                if (grid[j - 1, k +1] == 1) ///Check Row directly NE/Diagonal right of selected cell  
-                {
-                    bombTracker++;
-                    
-                }
-                if (grid[j - 1, k - 1] == 1) ///Check Row directly NW/Diagonal left of selected cell  
-                {
-                    bombTracker++;
-
-                }
-
-                if (grid[j + 1, k - 1] == 1) ///Check Row directly SW/Diagonal left of selected cell  
-                {
-                    bombTracker++;
-
-                }
-
-                if (grid[j + 1, k + 1] == 1) ///Check Row directly SE/Diagonal left of selected cell  
-                {
-                    bombTracker++;
-
-                }
-                ////} else if (grid[j, k + 2] == 1)
-                ////{
-                ////    bombTracker++;
-                ////}
+                Search.CheckSurrounds(grid, grid2, j, k);
 
 
 
-
-                // Console.WriteLine(j);
-                // Console.WriteLine(k);
-                Console.WriteLine("BombTracker Count:{0} ",bombTracker);
-
-                    //Console.WriteLine(bombTracker);
+                //    ///Show second Grid that tracks users guesses with a 3
+                //    grid2[j, k] = 3;
 
 
-
-
-
-
-                
-
-
-
+                //    for (int l = 0; l < 10; l++)
+                //{
+                //    for (int m = 0; m < 10; m++)
+                //    {
+                //        Console.Write(grid2[l, m] + "\t");
+                //    }
+                //    Console.WriteLine("\n");
+                //}
 
             }
-
 
         }
 
