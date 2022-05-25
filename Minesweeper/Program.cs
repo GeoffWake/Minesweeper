@@ -6,17 +6,24 @@ namespace Minesweeper
     {
         static void Main(string[] args)
         {
-            ///Create Grid
+            /// Grid to see where bombs are render
             int[,] grid = Search.GridCreation(10, 10);
 
             ///Second Grid
-            int[,]grid2 = Search.GridCreation(10, 10);
+            //int[,]grid2 = Search.GridCreation(10, 10);
+            string[,]grid2 = new string[10, 10];
+            string star = "*";
+            for (int i = 0; i <= 10 - 1; i++)
+            {
+                for (int h = 0; h <= 10 - 1; h++)
+                {
+                    grid2[i, h] = star;
+                }
+            }
 
 
 
-            ////Randomly Assign 10 1s to the grid that will represent the "Bombs"
-            ///
-
+            ////Randomly Assign 10 1s to the grid that will represent the "Bombs
             int x = 0;
             int y = 0;
             for (int i = 0; i < 10; i++)
@@ -25,61 +32,72 @@ namespace Minesweeper
                 y = Search.RandomNumberGenerator(0, 10);
 
                 grid[x, y] = 1;
-
+ 
             }
 
-
+            Messages.WelcomeMessage();
+            Messages.InstructionMessage();
             ////Loop within a loop to display grid to console with Bomb Locations showing 
             ///-NEEDS TO BE REMOVED FOR SUBMISSION
 
-            for (int l = 0; l < 10; l++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    Console.Write(grid[l, j] + "\t");
-                }
-                Console.WriteLine("\n");
-            }
-            Console.WriteLine("Enter your XY co-ordinates?");
-
+            //for (int l = 0; l < 10; l++)
+            //{
+            //    for (int j = 0; j < 10; j++)
+            //    {
+            //        Console.Write(grid[l, j] + "\t");
+            //    }
+            //    Console.WriteLine("\n");
+            //}
 
             ///Loop through to call Mine check and Surrounds Check
-             string[] guess = new string[90];
+            string[] guess = new string[90];
             for (int i = 0; i < 90; i++)
             {
+                try
+                {
+                Console.WriteLine("Please Enter your X and Y Co-Ordinate: ");
+                guess[i] = Console.ReadLine();
+                int k = Int32.Parse(guess[i].Substring(0, 1));
+                int j = Int32.Parse(guess[i].Substring(1, 1));
+               
 
-                    guess[i] = Console.ReadLine();
-                   int k = Int32.Parse(guess[i].Substring(0, 1));
-                   int  j= Int32.Parse(guess[i].Substring(1, 1));
+                ///Check Input Location for Mine
+                ///Search.CheckForMine(grid, j, k);
+                if (grid[j, k] == 1)
+                {
+                    Console.WriteLine("Boom");
+                    goto EndGame;
+                }
+                else if (grid[j, k] != 1)
+                {
+                    Console.WriteLine("Please try again");
+                }
 
+                ////Winning Condition
+                 if ( i == 90)
+                 {
+                        Console.WriteLine("Congratulations you are successful");
 
-                Console.WriteLine("Information displayed below will track your guesses and the amount of mines in corresponding posistions");
-                Console.WriteLine("A 2 will mean there are two mines connected with the selected cell");
-                Console.WriteLine("A 1 will mean there is one mine connected.");
-                Console.WriteLine("A 0 will mean there are no mines connected to your choice");
-                Console.WriteLine("Continue with your guess until there re no remaining squares");
-
-
-                Search.CheckForMine(grid, j, k);
-
+                 }
+                ///Check surrounding locations for Mines and display results on second grid
                 Search.CheckSurrounds(grid, grid2, j, k);
 
+                }
+                catch
+                {
+                    Console.WriteLine("There has been an error");
+                }
+                {
+                   /// Console.WriteLine("Please re-enter your X and Y Co-Ordinates");
+                }
 
 
-                //    ///Show second Grid that tracks users guesses with a 3
-                //    grid2[j, k] = 3;
 
-
-                //    for (int l = 0; l < 10; l++)
-                //{
-                //    for (int m = 0; m < 10; m++)
-                //    {
-                //        Console.Write(grid2[l, m] + "\t");
-                //    }
-                //    Console.WriteLine("\n");
-                //}
 
             }
+
+            EndGame:
+            Messages.EndMessage();
 
         }
 
