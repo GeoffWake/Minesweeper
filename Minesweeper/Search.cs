@@ -28,8 +28,7 @@ namespace Minesweeper
 
 
         }
-
-       
+      
 
         //Check if user input location is a mine or not
         public static void CheckForMine( int [,]grid, int j, int k)
@@ -38,8 +37,12 @@ namespace Minesweeper
             if (grid[j, k] == 1)
             {
                 Console.WriteLine("Boom");
+                
+
+
 
             }
+            
             else if (grid[j, k] != 1)
             {
                 Console.WriteLine("Please try again");
@@ -49,8 +52,8 @@ namespace Minesweeper
 
         ///Check Surrounding locations for bombs and tally results
         ///Display "BombTracker" onto Console
-
-        public static void CheckSurrounds(int[,] grid, int[,] grid2, int j, int k )
+        
+        public static void CheckSurrounds(int[,] grid, string[,] grid2, int j, int k )
 
         {
             int bombTracker = 0;
@@ -143,13 +146,15 @@ namespace Minesweeper
 
             }
            
-            Console.WriteLine("Position {1},{2} BombTracker Count:{0} ", bombTracker, k, j);
+            Console.WriteLine("Position {1},{2} Bombs Around Your Choice:{0} ", bombTracker, k, j);
+
+
+            ///Second Grid to Display Bomb Tracker 
+            string  bomb = bombTracker.ToString();
+            grid2[j, k] = bomb;
+
+
             
-          
-            ///Second Grid to Display Bomb Tracker on Same grid
-            grid2[j, k] = bombTracker;
-
-
             for (int l = 0; l < 10; l++)
             {
                 for (int m = 0; m < 10; m++)
@@ -158,6 +163,8 @@ namespace Minesweeper
                 }
                 Console.WriteLine("\n");
             }
+
+
         }   
     }
 }
