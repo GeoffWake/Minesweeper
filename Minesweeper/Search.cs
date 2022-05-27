@@ -19,14 +19,9 @@ namespace Minesweeper
         public static int RandomNumberGenerator(int a, int b)
         {
             int x = 0;
-
             Random random = new Random();
             x = random.Next(a, b);
-
             return x;
-
-
-
         }
       
 
@@ -37,9 +32,6 @@ namespace Minesweeper
             if (grid[j, k] == 1)
             {
                 Console.WriteLine("Boom");
-                
-
-
 
             }
             
@@ -53,6 +45,33 @@ namespace Minesweeper
         ///Check Surrounding locations for bombs and tally results
         ///Display "BombTracker" onto Console
         
+
+
+        public static void UserDisplay(string[,]grid2)
+        {
+            string star = "*";
+            for (int i = 0; i <= 10 - 1; i++)
+            {
+                for (int h = 0; h <= 10 - 1; h++)
+                {
+                    grid2[i, h] = star;
+                }
+            }
+
+        }
+        public static void locations(int[,] grid)
+        {
+            
+            ///Display Mine Locations
+            for (int l = 0; l< 10; l++)
+            {
+                for (int j = 0; j< 10; j++)
+                {
+                    Console.Write(grid[l, j] + "\t");
+                }
+                Console.WriteLine("\n");
+            }
+        }
         public static void CheckSurrounds(int[,] grid, string[,] grid2, int j, int k )
 
         {
@@ -146,15 +165,13 @@ namespace Minesweeper
 
             }
            
-            Console.WriteLine("Position {1},{2} Bombs Around Your Choice:{0} ", bombTracker, k, j);
-
+            Console.WriteLine("Position {1},{2}. Bombs Around Your Choice:{0} ", bombTracker, k, j);
+            Console.WriteLine("");
 
             ///Second Grid to Display Bomb Tracker 
             string  bomb = bombTracker.ToString();
             grid2[j, k] = bomb;
 
-
-            
             for (int l = 0; l < 10; l++)
             {
                 for (int m = 0; m < 10; m++)
